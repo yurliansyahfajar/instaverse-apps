@@ -1,0 +1,27 @@
+{
+  "name": "back-end",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yurliansyahfajar/instaverse-apps.git"
+  },
+  "author": "Fajar",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yurliansyahfajar/instaverse-apps/issues"
+  },
+  "homepage": "https://github.com/yurliansyahfajar/instaverse-apps#readme",
+  "dependencies": {
+    "body-parser": "^1.20.1",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "mongoose": "^6.8.1",
+    "nodemon": "^2.0.20"
+  }
+}
