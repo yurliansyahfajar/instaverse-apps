@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import Story from '../models/storiesContent.js';
+import { v4 as uuidv4 } from 'uuid';
 
 // Set Root Routes to get list of Stories from moongoose
 const getStories =  async (req, res) => {
@@ -25,7 +26,8 @@ const createStories = async (req, res) => {
 
     // store body request value to new object and passed it into the model
     const newStory = new Story ({
-        ...body
+        ...body,
+        userId : uuidv4()
     })
 
     try {

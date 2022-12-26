@@ -17,6 +17,9 @@ app.use(bodyParser.urlencoded(
     {limit: "32mb", extended: true}
 ));
 
+app.use(cors());
+app.options('*', cors());
+
 // Set Routes for apps
 app.use('/stories', StoriesRoute);
 
