@@ -44,5 +44,53 @@ const createStories = async (req, res) => {
 
 }
 
-export {getStories, createStories};
+const updateStories = async (req, res) => {
+
+    // get params value 
+    const {id : _id} = req.params;
+
+    // get body value
+    const story = req.body;
+
+    // check database if id is not valid then return not found
+    if (!mongoose.Types.ObjectId.isValid(_id)) {
+        return res.status(404).send("This id doesn't belong to any story");
+    }
+
+    // update story by id
+    const updateStory = await Story.findByIdAndUpdate(_id, story, { new : true });
+    
+    // send back to frontend in json format
+    res.json(updateStory);
+}
+
+const deleteStories = async (req, res) => {
+    // get params value 
+    const {id} = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).send("This id doesn't belong to any story");
+    }
+
+    await Story.findByIdAndRemove(id);
+
+    res.json({message : "Story Deleted Successfully"});
+}
+
+const likeStories = async (req, res) => {
+    // get params value 
+    const {id} = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).send("This id doesn't belong to any story");
+    }
+
+    const story = await Story.findById(id);
+
+    const updateStories = await Story.findByIdAndUpdate(id, { likes : story.likes + 1 }, { new : true });
+
+    res.json(updateStories)
+}
+
+export {getStories, createStories, updateStories, deleteStories,likeStories};
 

@@ -45,4 +45,4 @@ connect_DB();
 
 //run message if connection is "open" or "error" 
 mongoose.connection.on("open", ()=> console.log("Connection to database is successfull"));
-mongoose.connection.on("error", ()=> console.error(error.message));
+mongoose.connection.on("error", (err)=> console.error(err.message));
