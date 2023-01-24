@@ -3,9 +3,11 @@ import mongoose from "mongoose";
 import cors from "cors";
 import bodyParser from "body-parser";
 import StoriesRoute from "./routes/stories.js";
+import dotenv from "dotenv";
 
 // Use Express and add to variable
 const app = express();
+dotenv.config();
 
 // Use body-parser to get json from body request
 app.use(bodyParser.json(
@@ -27,8 +29,8 @@ app.use('/stories', StoriesRoute);
 app.use(cors());
 
 //Add global variable for mongo cloud connection
-const MONGO_URI = "mongodb+srv://root:test123@cluster0.ykjwjef.mongodb.net/?retryWrites=true&w=majority";
-const PORT = process.env.port || 5001;
+const MONGO_URI = process.env.MONGO_URI;
+const PORT = process.env.PORT || 5001;
 
 //create async function to connect to DB
 const connect_DB = async () => {
