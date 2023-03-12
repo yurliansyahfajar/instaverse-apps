@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import cors from "cors";
 import bodyParser from "body-parser";
 import StoriesRoute from "./routes/stories.js";
+import UserRoute from "./routes/users.js";
 import dotenv from "dotenv";
 
 // Use Express and add to variable
@@ -24,6 +25,7 @@ app.options('*', cors());
 
 // Set Routes for apps
 app.use('/stories', StoriesRoute);
+app.use('/user', UserRoute);
 
 // Use Cors
 app.use(cors());

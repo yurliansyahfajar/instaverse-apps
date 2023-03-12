@@ -22,11 +22,11 @@ export const getStories = () => async (dispatch) => {
 
 //create action getStories function with aync dispatch
 export const createStories = (story) => async (dispatch) => {
+    console.log(story);
     try {
 
         // post data to api endpoint
         const {data} = await api.createStories(story);
-
         // dispatch type of action with type and data payload back to reducers
         dispatch({ type: CREATE_STORY, payload : data});
     } catch (error) {
@@ -63,11 +63,11 @@ export const deleteStories = (id) => async (dispatch) => {
 }
 
 //create action likeStories function with aync dispatch
-export const likeStories = (id) => async (dispatch) => {
+export const likeStories = (id, story) => async (dispatch) => {
     try {
 
         // patch/update data to api endpoint
-        const {data} = await api.likeStories(id);
+        const {data} = await api.likeStories(id, story);
 
         // dispatch type of action with type and data payload back to reducers
         dispatch({ type: LIKE_STORY, payload : data});

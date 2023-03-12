@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import Story from '../models/storiesContent.js';
-import { v4 as uuidv4 } from 'uuid';
+import { stringify, v4 as uuidv4 } from 'uuid';
 
 // Set Root Routes to get list of Stories from moongoose
 const getStories =  async (req, res) => {
@@ -24,10 +24,12 @@ const createStories = async (req, res) => {
     //get body request value
     const body = req.body;
 
+   
     // store body request value to new object and passed it into the model
     const newStory = new Story ({
         ...body,
-        userId : uuidv4()
+        userId : req.body.userId,
+        postDate : new Date().toISOString()
     })
 
     try {
@@ -37,7 +39,7 @@ const createStories = async (req, res) => {
         // return 201 status with value of new story object if success
         res.status(201).json(newStory);
     } catch (error) {
-
+        
         // return 409 status with value if error storing to database
         res.status(409).json({message: error.message});
     }
@@ -68,6 +70,9 @@ const deleteStories = async (req, res) => {
     // get params value 
     const {id} = req.params;
 
+    // get body value
+    const story = req.body;
+
     if (!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(404).send("This id doesn't belong to any story");
     }
@@ -81,11 +86,24 @@ const likeStories = async (req, res) => {
     // get params value 
     const {id} = req.params;
 
+    const userId = JSON.stringify(req.body);
+  
+    if(!userId) return res.json({ message : "Unauthenticated User"});
+
+
     if (!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(404).send("This id doesn't belong to any story");
     }
 
     const story = await Story.findById(id);
+
+    const index = story.likes.findIndex(id => id === String(userId));
+
+    if (index === -1) {
+        story.likes.push(userId);
+    } else {
+        story.likes = story.likes.filter(id => id !== String(userId));
+    }
 
     const updateStories = await Story.findByIdAndUpdate(id, { likes : story.likes + 1 }, { new : true });
 

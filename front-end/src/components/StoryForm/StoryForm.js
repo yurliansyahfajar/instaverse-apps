@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import FileBase64 from "react-file-base64";
 import styles from "./style";
 import { createStories, updateStories } from "../../actions/stories";
+import { Link } from "react-router-dom";
 
 
 
@@ -18,10 +19,15 @@ const StoryForm = ({selectedId, setSelectedId}) => {
     //use dispatch
     const dispatch = useDispatch();
 
+    const user = JSON.parse(localStorage.getItem("profile"));
+    const username = user?.result?.username;
+    const userId = user?.result?._id;
+   
+
     const onSubmit = (formValues) => {
         selectedId ? 
-        dispatch(updateStories(selectedId, formValues)) :
-        dispatch(createStories(formValues));    
+        dispatch(updateStories(selectedId, {...formValues, username})) :
+        dispatch(createStories({...formValues, username, userId}));    
 
         reset();
     };
@@ -35,6 +41,20 @@ const StoryForm = ({selectedId, setSelectedId}) => {
     const reset = () => {
         form.resetFields();
         setSelectedId(null);
+    }
+
+    if (!user) {
+        return (
+            <Card>
+                <Title level={4} >
+                   <span style={styles.formTitle}>
+                        Welcome to Instaverse!
+                   </span> <br />
+                   Please <Link to="/authform">login</Link> or{" "}
+                   <Link to="/authform">register</Link>  for sharing instant moments or ideas.
+                </Title>
+            </Card>
+        )
     }
 
     return (
@@ -53,10 +73,6 @@ const StoryForm = ({selectedId, setSelectedId}) => {
                 size="middle"
                 onFinish={onSubmit}
             >
-                <Form.Item name="username" label="Username" rules={[{ required: true}]}>
-                    <Input allowClear />
-                </Form.Item>
-
                 <Form.Item name="caption" label="Caption" rules={[{ required: true}]}>
                     <Input.TextArea allowClear autoSize={{ minRows:2, maxRows:6}} />
                 </Form.Item>
